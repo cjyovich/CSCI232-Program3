@@ -1,3 +1,11 @@
+/* Courtney Yovich and Tyler Fleetwood
+* 4/10/2018
+* Class that defines and uses all three algorithms, Prim's, Kruskal's, and Floyd-Warshalls respectively
+* to navigate matrices and find the minimum spanning tree, the least weighted edge between any two trees,
+* and the shortest path between two trees. 
+* Our program reads in "INF" as the infinity marker for the adjacency matrix.
+*/
+
 import java.io.BufferedReader;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
