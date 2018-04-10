@@ -1,3 +1,7 @@
+/* Courtney Yovich and Tyler Fleetwood
+* 4/10/2018
+* Class to define and manipulates vertices within the matrices
+*/
 
 public class Vertex {
 
