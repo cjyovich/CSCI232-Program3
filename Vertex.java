@@ -1,24 +1,48 @@
 
 public class Vertex {
 
-	private char label;
+	private String label;
 	private boolean reached;
+	private boolean isStart;
+	private boolean isEnd;
 	
-	public Vertex(char l) {
+	public Vertex(String l) {
 		label = l;
 		reached = false;
+		isStart = false;
+		isEnd = false;
 	}
 	
-	public char getLabel() {
+	public String getLabel() {
 		return label;
 	}
 	
+	public boolean isStart() {
+		return isStart;
+	}
+
+	public void setStart(boolean isStart) {
+		this.isStart = isStart;
+	}
+
+	public boolean isEnd() {
+		return isEnd;
+	}
+
+	public void setEnd(boolean isEnd) {
+		this.isEnd = isEnd;
+	}
+
 	public void putInTree() {
 		reached = true;
 	}
 	
 	public boolean isReached() {
 		return reached;
+	}
+
+	public void setReached(boolean reached) {
+		this.reached = reached;
 	}
 
 }
