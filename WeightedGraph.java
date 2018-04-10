@@ -112,43 +112,66 @@ public class WeightedGraph {
 			return pq.poll().getDest();
 		}
 	}
+	
+	public int find(Cluster clusters[], int e) { //find a cluster
+		if(clusters[e].parent != e) {
+			clusters[e].parent = find(clusters, clusters[e].parent);
+		}
+		return clusters[e].parent;
+	}
+	
+	void Union(Cluster clusters[], int x, int y) { //makes a union of two clusters
+        int rootX = find(clusters, x);
+        int rootY = find(clusters, y);
+        
+        if (clusters[rootX].rank < clusters[rootY].rank)
+            clusters[rootX].parent = rootY;
+        else if (clusters[rootX].rank > clusters[rootY].rank)
+            clusters[rootY].parent = rootX;
+        else
+        {
+            clusters[rootY].parent = rootX;
+            clusters[rootX].rank++;
+        }
+    }
 
 	public void Kruskals() {
-		for (int i = 0; i < vertices.length; i++) { // no vertices in the tree yet
-			vertices[i].setReached(false);
-		}
-		int forest[][] = new int[vertices.length - 1][2];
+		Edge forest[] = new Edge[vertices.length - 1]; //forest of edges
 		PriorityQueue<Edge> pq = new PriorityQueue<Edge>();
 		for (int i = 0; i < vertices.length; i++) {
-			for (int j = 0; j < vertices.length; j++) {
+			for (int j = i + 1; j < vertices.length; j++) {
 				if (matrix[i][j] != INFINITY && i != j) {
 					Edge edge = new Edge(i, j, matrix[i][j]);
 					pq.add(edge); // adds all vertices to pq, no duplicates
 				}
 			}
 		}
-		int count = 0;
-		boolean duplicate = false;
-		while (pq.peek() != null) {
-			Edge edge = pq.poll();
-			if (edge.getDest() > edge.getStart()) {
-				if ((vertices[edge.getDest()].isEnd() == false || vertices[edge.getStart()].isStart() == false)
-						&& vertices[edge.getStart()].isReached() == false) {
-					forest[count][0] = edge.getStart();
-					forest[count][1] = edge.getDest();
-					vertices[edge.getDest()].setEnd(true);
-					vertices[edge.getStart()].setStart(true);
-					vertices[edge.getDest()].putInTree();
-					count++;
-				}
-			}
+		Cluster c[] = new Cluster[vertices.length];
+		for(int i = 0; i < vertices.length; i++) {
+			c[i] = new Cluster(); //make a cluster for each vertex
 		}
+		for (int j = 0; j < vertices.length; j++) {
+            c[j].parent = j;
+            c[j].rank = 0;
+        }
+		int edge = 0;
+		while (edge < vertices.length - 1)
+        {
+            Edge next_edge = pq.poll();
+ 
+            int x = find(c, next_edge.getStart());
+            int y = find(c, next_edge.getDest());
+            //if it doesn't cycle, adds edge to forest
+            if (x != y)
+            {
+                forest[edge++] = next_edge;
+                Union(c, x, y);
+            }
+        }
 		for (int i = 0; i < forest.length; i++) { // prints the forest
-			for (int j = 0; j < 2; j++) {
-				int v = forest[i][j];
-				System.out.print(vertices[v].getLabel());
-			}
-			System.out.print(" ");
+			int start = forest[i].getStart();
+			int dest = forest[i].getDest();
+			System.out.print(vertices[start].getLabel() + vertices[dest].getLabel() + " ");
 		}
 		System.out.println();
 	}
@@ -182,7 +205,7 @@ public class WeightedGraph {
 
 	public static void main(String args[]) {
 		WeightedGraph graph = new WeightedGraph(10);
-		Path path = FileSystems.getDefault().getPath("input", "matrix.csv");
+		Path path = FileSystems.getDefault().getPath("input", "Matrix.csv");
 		Charset charset = Charset.forName("US-ASCII");
 		try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
 			String line = reader.readLine(); // reads in the vertices
