@@ -1,3 +1,7 @@
+/*Courtney Yovich and Tyler Fleetwood
+* 4/10/2018
+*Edge class to define and manipulate edges for the matrices
+*/
 
 public class Edge implements Comparable<Edge>{
 	private int firstVert;
