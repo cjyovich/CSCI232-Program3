@@ -9,6 +9,10 @@ public class Edge implements Comparable<Edge>{
 		secondVert = vert2;
 		weight = w;
 	}
+
+	public int getStart() {
+		return firstVert;
+	}
 	
 	public int getDest() {
 		return secondVert;
